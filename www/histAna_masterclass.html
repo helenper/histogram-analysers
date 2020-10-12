@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Masterclass UiO modification of crossfilter for ATLAS Outrech</title>
+    <meta charset="UTF-8">
+
+  </head>
+
+
+  <body>
+
+    <div>
+
+      <h1> Masterclass UiO </h1>
+
+      <p> On this page you can use the tool below to analyse particle physics events by creating different cuts in the histograms. </p>
+
+      <!-- Not clicable yet, just for idea of design element -->
+      <p> To uplode a new cvs file with data:  <button id="newDataFile" type="button">Click here</button> </p>
+
+      <!--
+      <p> To use data from our database, select date/year and institute:
+	<select id="date" name="date">
+	  <option value="2020">2020</option>
+	  <option value="2019">2019</option>
+	</select>
+
+	<select id="institute" name="institute">
+	  <option value="UiO">UiO</option>
+	  <option value="UiB">UiB</option>
+	</select>
+
+	<button id="oldDataFile" type="button">Select choices</button>
+
+      </p>
+      -->
+
+      <p>
+        <!--<form action="old_data_selected.txt"> -->
+        <label for="date">To use an old data set choose date and institute:</label>
+        <select name="date" id="date">
+          <option disabled hidden selected>Date</option>
+          <option value="2020">2020</option>
+      	  <option value="2019">2019</option>
+        </select>
+
+          <select name="institute" id="institute">
+            <option disabled hidden selected>Institute</option>
+            <option value="UiO">UiO</option>
+        	  <option value="UiB">UiB</option>
+          </select>
+          <input id="oldDataFile" type="submit" value="Submit">
+        </form>
+      </p>
+
+
+      <script type="text/javascript" src="histAna_datafiles.js"></script>
+
+      <hr style="border:1px solid lightgray;">
+    </div>
+
+
+    <div>
+
+    <iframe title="Crossfilter histograms" src="crossfilter.html" style="border:5px none Gainsboro;" width=100% height=1000px>
+    </iframe>
+
+    </div>
+
+  </body>
+</html>
