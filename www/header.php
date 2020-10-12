@@ -2,8 +2,6 @@
   session_start();
  ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,83 +10,50 @@
     <link rel="stylesheet" href="css/masterclass_styles.css">
     <link rel="stylesheet" href="css/margins.css">
   </head>
-  <body>
+<body>
+    <header>
+      <a href="index.php"> <img src="/images/ATLAS-Logo-small-blue_txt.png" title="ATLAS experiment logo" alt="ATLAS experiment logo"/> </a>
 
-    <div class="header">
-      <!--
-      <img src="/images/ippog.png" width="150px" height="150px" title="ATLAS detector magnet heads" alt="ATLAS detector magnet heads" />
+      <div class="header_wrapper">
+      <?php
 
-      <span class="header_text">
+      $nav_bar_names = array('admin'=>array('Admin', 'Moderator', 'Tutor', 'Student'), 'moderator'=>array('Moderator', 'Tutor', 'Student'), 'tutor'=>array('Tutor', 'Student'));
+      ?>
 
-      Masterclass
-    </span>
-  -->
-
-  Masterclass
-
-  <?php
-  if (isset($_SESSION['userName'])){
-    echo "<form action='includes/logout.inc.php' method='POST'>
-      <button type='submit' name='logout-submit'>Logout</button>";
-    }
-
-    $nav_bar_names = array('admin'=>array('Admin', 'Moderator', 'Tutor', 'Student'), 'moderator'=>array('Moderator', 'Tutor', 'Student'), 'tutor'=>array('Tutor', 'Student'));
-
-    ?>
-
-    <nav>
-
-    <?php
-    //foreach ($nav_bar as $key => $value) {
-    if (is_array($nav_bar_names) || is_object($nav_bar_names)){
-      foreach ($nav_bar_names as $key => $value) {
-        if ($key == $_SESSION['userPrivileges']) {
-          foreach ($nav_bar_names[$key] as $k => $v) {
-            $link = strtolower($v).'_page.php';
-            echo "<a href=$link>  $v  </a>";
-          }
-        }
-
-      }
-
-
-      }
-      else {
-        echo "nop";
-      }
-
-    //}
-    ?>
-</nav>
-
-    <?php
-    /*
-      echo "{<nav>
+      <!-- Create different nav bar based on users privilegies -->
       <ul>
-      if ($_SESSION['userPrivileges'] == 'admin' ) {
-        <li> Admin</li>
-        <li> Moderator</li>
-        <li> Tutor</li>
-        <li> Student</li>
-      }
-      else if  ($_SESSION['userPrivileges'] == 'admin' || $_SESSION['userPrivileges'] == 'moderator'  ) {
-        <li> Moderator</li>
-        <li> Tutor</li>
-        <li> Student</li>
-      }
-      else if  ($_SESSION['userPrivileges'] == 'admin' || $_SESSION['userPrivileges'] == 'moderator'  || $_SESSION['userPrivileges'] == 'tutor') {
-        <li> Tutor</li>
-        <li> Student</li>
-      }
+        <!--
+        <li><img src="/images/ATLAS-Logo-small-blue_txt.png" title="ATLAS experiment logo" alt="ATLAS experiment logo"/></li>
+        -->
+        <?php
+          if (is_array($nav_bar_names) || is_object($nav_bar_names)){
+            foreach ($nav_bar_names as $key => $value) {
+              if ($key == $_SESSION['userPrivileges']) {
+                foreach ($nav_bar_names[$key] as $k => $v) {
+                  $link = strtolower($v).'_page.php';
+                  echo " <li> <a href=$link>  $v  </a> </li>";
+                }
+              }
+            }
+            if (isset($_SESSION['userName'])){
+              echo "<form action='includes/logout.inc.php' method='POST'>
+              <button class='logout' type='submit' name='logout-submit'>Log out</button>";
+            }
+          }
+          else {
+            echo "There was a problem with giving you the navigation menu.";
+          }
+        ?>
       </ul>
-    </nav>}";*/
-?>
+
+      <?php
+
+       ?>
 
 
-
-<!--
-      <img src="/images/ATLAS_magnet-head.jpg" position="left" width="550px" height="150px" title="ATLAS detector magnet heads" alt="ATLAS detector magnet heads" />
-  -->
     </div>
+  </header>
+
+
   </body>
-  </html>
+</html>

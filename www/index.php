@@ -14,6 +14,7 @@
   </head>
   <body>
   -->
+<body>
   <main>
     <div class="page_margins">
     <h2>Welcome to the Masterclass histogram analysis tool</h2>
@@ -54,4 +55,5 @@
 
 
   </div>
-  <main>
+</main>
+</body>
