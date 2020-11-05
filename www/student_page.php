@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="css/margins.css">
     <link rel="stylesheet" href="css/masterclass_styles.css">
   </head>
-
-
   <body>
 -->
 <main>
@@ -69,7 +67,7 @@
 
 
       <div id="histograms" style="display:none">
-        <iframe title="Crossfilter histograms" src="crossfilter.html" style="border:5px none Gainsboro;" width=100% height=1000px>
+        <iframe title="Crossfilter histograms" src="/HistogramAnalyser/crossfilter.html" style="border:5px none Gainsboro;" width=100% height=1000px>
         </iframe>
 
       </div>

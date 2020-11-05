@@ -16,13 +16,19 @@
   -->
 <body>
   <main>
+    <div class="sidebar-left">
+      JOJO
+    </div>
+
+    <div class="sidebar-right">
+      JEJE
+    </div>
+
     <div class="page_margins">
+
     <h2>Welcome to the Masterclass histogram analysis tool</h2>
-    <p>
 
-    </p>
-
-    <div class="center">
+    <!-- <div class="center">-->
     <!-- NOT IN USE ANY MORE
     <button class="index_button" type="submit" name="select-student" onclick="location.href = 'histAna_masterclass.php'">Student</button>
     <button class="index_button" type="submit" name="select-tutor" onclick="location.href = 'teacher_info.php'">Tutor</button>
@@ -36,7 +42,6 @@
         }
         else {
           echo "<p> Welcome to masterclass!</p>";
-
         }
       }
       else {
@@ -51,9 +56,10 @@
       }
     ?>
 
-  </div>
+  <!-- </div>-->
 
 
   </div>
+
 </main>
 </body>
