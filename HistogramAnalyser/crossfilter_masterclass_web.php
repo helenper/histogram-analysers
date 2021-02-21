@@ -1,0 +1,235 @@
+<?php
+ include_once "../header_HistogramAnalysis.php";
+ //include_once "../header.php";
+?>
+
+<!-- <!DOCTYPE html>
+<html lang="en">-->
+
+  <body>
+    <div style="width:1050px">
+<table style="width:100%">
+  <tr style="height: 50px">
+    <td valign="bottom">Channel</td>
+    <td valign="bottom">Reconstructed Dilepton Mass [GeV]</td>
+    <td valign="bottom">Number of Jets</td>
+  </tr>
+  <tr>
+    <td><div id="hist1"></div></td>
+    <td><div id="hist2"></div></td>
+    <td><div id="hist3"></div></td>
+  </tr>
+  <tr style="height: 50px">
+    <td valign="bottom">Are Jets b-tagged?</td>
+    <td valign="bottom">Total Lepton Transverse Momentum [GeV]</td>
+    <td valign="bottom">Missing Transverse Momentum (MET) [GeV]</td>
+  </tr>
+  <tr>
+    <td><div id="hist4"></div></td>
+    <td><div id="hist5"></div></td>
+    <td><div id="hist6"></div></td>
+  </tr>
+  <tr style="height: 50px">
+    <td valign="bottom">Opening Angle Between MET and Leptons [phi]</td>
+    <td valign="bottom">Opening Angle Between Leptons [phi]</td>
+    <td valign="bottom">Expected Number of Events for 1/fb</td>
+  </tr>
+  <tr>
+    <td><div id="hist7"></div></td>
+    <td><div id="hist8"></div></td>
+    <td><div id="hist9"></div></td>
+ </table>
+</div>
+
+    <script charset="utf-8" type="text/javascript" src="d3.js"></script>
+    <script charset="utf-8" type="text/javascript" src="crossfilter.js"></script>
+    <!--php include "crossfilter_masterclass.php";
+    //echo $file;
+    ?> -->
+
+    <script charset="utf-8" type="text/javascript" src="dc.js"></script>
+    <?php
+    // --------------
+    // New code
+    // --------------
+    //session_start();
+
+     $file = $_SESSION['dataLocUpload'];
+     echo $_SESSION['institute'];
+     echo $_SESSION['uploadDate'];
+     echo $_SESSION['gruop'];
+     echo $file;
+     ?>
+
+    <script type=text/javascript>
+    // var input_file = "outreach_small";
+    var filename = "../" + "<?php echo $file; ?>";
+    var filetype = "csv";
+
+    //filename = "outreach.csv"
+
+    document.write(filename)
+    </script>
+
+
+    <script charset="utf-8" type="text/javascript">
+    //document.write(filename)
+
+      if (filetype == "csv") {
+
+      d3.csv(filename, function(error, events) {
+
+          events.forEach(function(x) {
+             x.weight = +x.weight;
+          });
+
+          function add_by_channel(p, v) {
+                 p[v.type] = (p[v.type] || 0) + v.weight;
+                 return p;
+          }
+
+          function remove_by_channel(p, v) {
+                 p[v.type] = (p[v.type] || 0) - v.weight;
+                 return p;
+          }
+
+          function initial(p, v) {
+             return {};
+          }
+
+          var colorScale = d3.scale.ordinal().range(["#1C5EA8","#F66A00","#2A9000","#C31318"]);
+
+          var ndx                       = crossfilter(events),
+              njetDimension             = ndx.dimension(function(d) {return +d.NJets;}),
+              typeDimension             = ndx.dimension(function(d) {return +d.type;}),
+              METDimension              = ndx.dimension(function(d) {return +Math.floor(d.MET*0.1)*10;}),
+              DeltaPhiMETLLDimension    = ndx.dimension(function(d) {return +Math.floor(Math.abs(d.METLLDeltaPhi*0.31813*18))*10;}),
+              SumLepPtDimension         = ndx.dimension(function(d) {return +Math.floor(d.SumLepPt*0.1)*10;}),
+              ZWindowDimension          = ndx.dimension(function(d) {return +Math.floor(d.Mll*0.2)*5;}),
+              ChannelDimension          = ndx.dimension(function(d) {return +d.Channel;}),
+              DeltaPhiDimension         = ndx.dimension(function(d) {return +Math.floor(d.LepDeltaPhi*0.31813*18)*10;})
+              BTagDimension             = ndx.dimension(function(d) {return +d.BTags})
+              NJetGroup                 = njetDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              DeltaPhiMETLLGroup        = DeltaPhiMETLLDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              SumLepPtGroup             = SumLepPtDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              ZWindowGroup              = ZWindowDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              BTagGroup                 = BTagDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              compGroup                 = typeDimension.group().reduceSum(function(d) {return +d.weight;}),
+              mcstatGroup               = typeDimension.group().reduceCount(),
+              ChannelGroup              = ChannelDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              METGroup                  = METDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              DeltaPhiGroup             = DeltaPhiDimension.group().reduce(add_by_channel,remove_by_channel, initial),
+              SignificanceGroup         = typeDimension.groupAll().reduce(
+                  function (p, v) {
+                      if (v.type == 0) p.sig += v.weight;
+                      else p.bkg += v.weight;
+                      return p;
+                  },
+                  function (p, v) {
+                      if (v.type == 0) p.sig -= v.weight;
+                      else p.bkg -= v.weight;
+                      return p;
+                  },
+                  function () { return {sig:0, bkg:0}; }
+              );
+
+           function sel_stack(i) {
+               return function(d) {
+                   return d.value[i];
+               };
+           }
+
+           function type(i){
+              if (i == "0") return "HWW";
+              if (i == "1") return "WW";
+              if (i == "2") return "ttbar";
+              if (i == "3") return "Z";
+              return "default"
+           }
+
+           function make_barchart( location, domain, label, dimension, group ){
+             var chart = dc.barChart(location)
+             chart.width(350)
+                  .height(250)
+                  .x(d3.scale.linear().domain(domain))
+                  .margins({left: 50, top: 10, right: 10, bottom: 35})
+                  .brushOn(true)
+                  .elasticY(true)
+                  .xAxisLabel(label)
+                  .yAxisLabel("Events")
+                  // .yAxisPadding("5%")
+                  .clipPadding(10)
+                  .dimension(dimension)
+                  .group(group, "HWW",   sel_stack('0'))
+                  .stack(group, "WW",    sel_stack('1'))
+                  .stack(group, "ttbar", sel_stack('2'))
+                  .stack(group, "Z",     sel_stack('3'))
+                  .on('renderlet', function (chart) {
+                      chart.selectAll('.x-axis-label').attr('transform', 'translate(345,238)').attr('text-anchor', 'end');
+                      chart.selectAll('.y-axis-label').attr('transform', 'rotate(-90), translate(-30,12)');
+                  });
+             return chart
+          }
+
+          var njetChart = make_barchart("#hist3", [-0.5,10], "N(Jets)", njetDimension, NJetGroup)
+          njetChart.centerBar(true)
+          njetChart.legend(dc.legend().x(270).y(10).itemHeight(20).gap(5))
+
+
+          var channelChart = make_barchart("#hist1", [0,3], "Channel", ChannelDimension, ChannelGroup)
+          channelChart.xAxis().tickFormat(function(d){if(d == 0.5){return "ee"}; if(d == 1.5){return "mm"};if(d == 2.5){return "em";}});
+
+          var ZWindowChart = make_barchart("#hist2", [0,104.9], "M(ll)", ZWindowDimension, ZWindowGroup)
+          ZWindowChart.xUnits(dc.units.fp.precision(5));
+
+          var METChart     = make_barchart("#hist6", [0,200], "MET", METDimension, METGroup)
+          METChart.xUnits(dc.units.fp.precision(10));
+
+          var DeltaPhiMETLLChart    = make_barchart("#hist7", [0, 180],"DeltaPhi(MET,ll)" ,DeltaPhiMETLLDimension, DeltaPhiMETLLGroup)
+          DeltaPhiMETLLChart.xUnits(dc.units.fp.precision(10));
+
+          var deltaphiChart = make_barchart("#hist8", [0,180], "DeltaPhi(l,l)", DeltaPhiDimension, DeltaPhiGroup)
+          deltaphiChart.xUnits(dc.units.fp.precision(10));
+
+          var sumlepptChart = make_barchart("#hist5", [0,200], "PT(ll)", SumLepPtDimension, SumLepPtGroup)
+          sumlepptChart.xUnits(dc.units.fp.precision(10));
+
+          var BTagChart = make_barchart("#hist4", [0,3], "BTag", BTagDimension, BTagGroup)
+          BTagChart.xAxis().tickFormat(function(d){if(d == 0.5){return "no"}; if(d == 1.5){return "yes"}});
+          BTagChart.xAxis().tickValues([0, 0.5,1,1.5,2]);
+
+          var mcCompChart = dc.rowChart("#hist9")
+          mcCompChart.width(350).height(250)
+                     .margins({left: 5, top: 10, right: 10, bottom: 57})
+                     .x(d3.scale.log().domain([0,1000]))
+                     .title("Process")
+                     .dimension(typeDimension)
+                     .group(compGroup)
+                     .label(function(d) {
+                            val = type(d.key) + " (" + d.value.toFixed(0) + ")"
+                            return (d.key != 0) ? val : val + "    Significance: " + significance(SignificanceGroup.value()).toFixed(3)
+                     })
+
+                     .elasticX(true)
+                     .colors(colorScale)
+                     .on('renderlet', function (chart) {
+                         chart.selectAll('g.axis text').attr('transform', 'translate(-10,10) rotate(315)');
+                     });
+
+      var significance = function(d) {
+          return d.sig/Math.sqrt(d.bkg);
+       };
+
+
+      dc.renderAll();
+
+      });
+    }
+
+
+
+    </script>
+
+
+  </body>
+</html>

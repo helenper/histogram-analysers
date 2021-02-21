@@ -2,7 +2,7 @@
 
 $servername = "localhost";
 $dBUsername = "root";
-$dBPassword = "12345678";
+$dBPassword = '#ma$t3rc!a$$';
 $dBName = "loginsystem_masterclass";
 
 $conn = mysqli_connect($servername, $dBUsername, $dBPassword, $dBName);

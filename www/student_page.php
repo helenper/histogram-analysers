@@ -1,18 +1,7 @@
 <?php
-  include_once "header.php";
- ?>
+ include_once "header.php";
+?>
 
-<!--
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Masterclass UiO modification of crossfilter for ATLAS Outrech</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/margins.css">
-    <link rel="stylesheet" href="css/masterclass_styles.css">
-  </head>
-  <body>
--->
 <main>
     <div class="page_margins">
       <div>
@@ -22,12 +11,26 @@
       <p> Welcome to Masterclass!</p>
       <p> On this page you can use the tool below to analyse particle physics events by creating different cuts in the histograms. </p>
 
-      <!-- Not clicable yet, just for idea of design element -->
+
       <p>
         <form action="datafile_selector.php" method="post" enctype="multipart/form-data">
-          <label for="myfile">To uplode a new cvs file with data:</label>
-          <input type="file" id="myfile" name="myfile">
-          <button type="submit" name="submit">Upload</button>
+          <select name="uploadDate" id="uploadDate">
+            <option disabled hidden selected>Date</option>
+            <option value="2021">2021-01-22</option>
+          </select>
+        <select name="institute" id="institute">
+              <option disabled hidden selected>Institute</option>
+              <option value="UiO">UiO</option>
+              <option value="UiB">UiB</option>
+          </select>
+          <select name="group" id="group">
+              <option disabled hidden selected>Group</option>
+              <option value="1A">1A</option>
+              <option value="1B">1B</option>
+          </select>
+          <label for="inputFile">To uplode a new cvs file with data:</label>
+          <input type="file" id="inputFile" name="inputFile">
+          <input type="submit" value="Upload">
         </form>
       </p>
 

@@ -1,5 +1,7 @@
 <?php
 
+// passwords are created by the following statement password_hash($password, PASSWORD_DEFAULT);
+
 if (!isset($_POST['login-submit'])){
 
   header("Location: ../index.php");
@@ -53,7 +55,7 @@ else{
             exit();
           }
         }
-        
+
         else {
 
           header("Location: ../index.php?error=wrongpwd2");

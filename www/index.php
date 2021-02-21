@@ -2,37 +2,14 @@
   include_once "header.php";
  ?>
 
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Masterclass UiO</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/masterclass_styles.css">
-    <link rel="stylesheet" href="css/margins.css">
-  </head>
-  <body>
-  -->
 <body>
   <main>
-    <div class="sidebar-left">
-      JOJO
-    </div>
-
-    <div class="sidebar-right">
-      JEJE
-    </div>
 
     <div class="page_margins">
 
     <h2>Welcome to the Masterclass histogram analysis tool</h2>
 
-    <!-- <div class="center">-->
-    <!-- NOT IN USE ANY MORE
-    <button class="index_button" type="submit" name="select-student" onclick="location.href = 'histAna_masterclass.php'">Student</button>
-    <button class="index_button" type="submit" name="select-tutor" onclick="location.href = 'teacher_info.php'">Tutor</button>
-    -->
+
 
     <?php
       if (isset($_SESSION['userName'])) {
@@ -53,6 +30,8 @@
           <input type="password" name="pwd" placeholder="Password">
         <button type="submit" name="login-submit">Login</button>
         </form>';
+
+
       }
     ?>
 
