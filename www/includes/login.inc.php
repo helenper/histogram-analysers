@@ -1,7 +1,100 @@
 <?php
 
-// passwords are created by the following statement password_hash($password, PASSWORD_DEFAULT);
+if (!isset($_POST['login-submit'])){
+  header("Location: ../index.php");
+  exit();
+}
 
+else{
+  $username =  $_POST['username'];
+  $password =  $_POST['pwd'];
+
+  $info = array();
+
+  $myfile = fopen("../info/info1.txt", "r") or die("Unable to open file!");
+  while(!feof($myfile)) {
+      $line = fgets($myfile);
+      list($uname, $pwd) = explode(":", $line);
+
+      $info[$uname] = trim($pwd);
+    }
+  fclose($myfile);
+
+  if (!array_key_exists($username, $info)){
+    echo "Wrong username";
+    //header("Location: ../index.php?login=failed");
+    exit();
+  }
+
+  else {
+    if (strcmp( $password, $info[$username] ) !== 0){
+      header("Location: ../index.php?login=failed");
+      exit();
+    }
+    else {
+        session_start();
+        $_SESSION['userName'] = $username;
+        $_SESSION['userPrivileges'] = $username;
+
+        if ($_SESSION['userPrivileges'] != 'student') {
+        header("Location: ../index.php?login=sucsess");
+        exit();
+        }
+
+        else {
+          header("Location: ../student_page.php");
+          exit();
+        }
+    }
+  }
+}
+
+
+
+      /*
+
+      if ($username != $uname) {
+        //echo "Wrong username or password";
+        header("Location: ../index.php?login=failed");
+        exit();
+      }
+      else {
+        if (strcmp( $string1, $string2 ) != 0){
+          //echo "Wrong username or password" ;
+          header("Location: ../index.php?login=failed");
+          exit();
+        }
+        else {
+          session_start();
+          $_SESSION['userName'] = $username;
+          $_SESSION['userPrivileges'] = $username;
+
+          if ($_SESSION['userPrivileges'] != 'student') {
+          header("Location: ../index.php?login=sucsess");
+          exit();
+          }
+          else {
+            header("Location: ../student_page.php");
+            exit();
+          }
+        }
+        }
+      }
+
+*/
+
+
+
+
+
+
+//--------------------
+//
+// Code for use of a database to store users and pwds
+// passwords are created by the following statement password_hash($password, PASSWORD_DEFAULT);
+//--------------------
+
+/*
 if (!isset($_POST['login-submit'])){
 
   header("Location: ../index.php");
@@ -71,5 +164,6 @@ else{
   }
 
 }
+*/
 
  ?>

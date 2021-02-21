@@ -23,7 +23,13 @@
       }
       else {
         echo "<p>Please sign in with your given username and password:</p>";
-        echo "<p> You are logged out!</p>";
+
+        if ($_GET['login'] == 'failed') {
+          echo "Wrong username or password. Please try again.";
+        }
+
+        // else ....
+        //echo "<p> You are logged out!</p>";
 
         echo '<form action="includes/login.inc.php" method="POST">
           <input type="text" name="username" placeholder="Username">
@@ -33,6 +39,8 @@
 
 
       }
+
+
     ?>
 
   <!-- </div>-->
