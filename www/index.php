@@ -12,6 +12,10 @@
 
 
     <?php
+
+    if (session_id() != "") {
+
+
       if (isset($_SESSION['userName'])) {
         if ($_SESSION['userPrivileges'] != 'student') {
           echo "<p> You are logged in! Navigate the page from the menu found on the top of the page.</p>";
@@ -22,14 +26,17 @@
         }
       }
       else {
-        echo "<p>Please sign in with your given username and password:</p>";
 
         if ($_GET['login'] == 'failed') {
           echo "Wrong username or password. Please try again.";
         }
 
-        // else ....
-        //echo "<p> You are logged out!</p>";
+
+        if (($_GET['logout'] == 'true') ) {
+          echo "<p> You are logged out!</p>";
+        }
+
+        echo "<p>Please sign in with your given username and password:</p>";
 
         echo '<form action="includes/login.inc.php" method="POST">
           <input type="text" name="username" placeholder="Username">
@@ -39,6 +46,11 @@
 
 
       }
+    }
+    else{
+      echo "Something went wrong. Try to refresh page.";
+      session_destroy();
+    }
 
 
     ?>

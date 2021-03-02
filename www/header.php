@@ -1,6 +1,7 @@
 <?php
+  //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_ALL);
+  //ini_set('display_errors',1);
   session_start();
-  //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
  ?>
 
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
   </head>
 <body>
     <header>
-      <a href="index.php"> <img src="/images/ATLAS-Logo-small-blue_txt.png" title="ATLAS experiment logo" alt="ATLAS experiment logo"/> </a>
+      <a href="index.php"> <img src="www/images/ATLAS-Logo-small-blue_txt.png" title="ATLAS experiment logo" alt="ATLAS experiment logo"/> </a>
 
       <div class="header_wrapper">
       <?php

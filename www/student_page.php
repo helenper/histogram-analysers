@@ -11,9 +11,46 @@
       <p> Welcome to Masterclass!</p>
       <p> On this page you can use the tool below to analyse particle physics events by creating different cuts in the histograms. </p>
 
+      <p> <?php
+      echo '<pre>';
+      var_dump($_SESSION);
+      echo '</pre>';
+
+      if ($_GET['error'] == 'upload') {
+        if ( isset($_SESSION['uploadDate']) && !isset($_SESSION['file'])) {
+          echo "File not uploaded. Please try again." ;
+        }
+        else {
+          echo "Something went wrong. Please try again." ;
+        }
+      }
+       ?> </p>
+
+
 
       <p>
-        <form action="datafile_selector.php" method="post" enctype="multipart/form-data">
+        <!--
+        <form action="datafile_selector_new.php" method="POST">
+          <input type="submit" id="upl_button" value="TEST">
+        </form> -->
+
+        <form action="datafile_selector_new.php" method="POST">
+          <input type="submit" id="uplo_button" value="test">
+        </form>
+
+      <form action="datafile_selector.php" method="POST">
+        <select name="date_upload" id="date_upload">
+          <option value="1"> 1 </option>
+        </select>
+        <select name="institute_new" id="institute_new">
+          <option value="UiO"> UiO </option>
+        </select>
+        <input type="submit" id="upload_file_button" value="Upload">
+      </form>
+
+
+        <!--
+        <form action="datafile_selector_new.php" method="post" enctype="multipart/form-data">
           <select name="uploadDate" id="uploadDate">
             <option disabled hidden selected>Date</option>
             <option value="2021">2021-01-22</option>
@@ -31,12 +68,13 @@
           <label for="inputFile">To uplode a new cvs file with data:</label>
           <input type="file" id="inputFile" name="inputFile">
           <input type="submit" value="Upload">
-        </form>
+        </form> -->
       </p>
 
       <p>
 
-        <form action="datafile_selector.php" method="post">
+<!--
+        <form action="datafile_selector_old.php" method="post">
           <label for="data">To select datafiles from database, select date</label>
           <select name="date" id="date">
             <option disabled hidden selected>Date</option>
@@ -51,17 +89,14 @@
             </select>
             <input type="submit" value="Submit">
         </form>
+        -->
       </p>
-
-      <p>  <?php
-        echo $date, $institute;
-        ?></p>
 
 
       <hr style="border:1px solid lightgray;">
     </div>
 
-
+<!--
     <div>
       <button class="histogram_button" type="submit" name="show_histograms">
         Click here to show show histograms
@@ -76,6 +111,7 @@
       </div>
 <script src="show_histograms.js"></script>
     </div>
+  -->
 
   </div>
 
