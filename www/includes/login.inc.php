@@ -37,7 +37,7 @@ else{
         $_SESSION['userPrivileges'] = $username;
 
         if ($_SESSION['userPrivileges'] != 'student') {
-        header("Location: ../index.php?login=sucsess");
+        header("Location: ../moderator_page.php");
         exit();
         }
 
